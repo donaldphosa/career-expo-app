@@ -1,11 +1,27 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import React from 'react'
+import React, { useState } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Dimensions} from 'react-native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase';
 
 const Login = ({navigation}) => {
   const{width,height} = Dimensions.get('window');
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+
+  const loginUser = async()=>{
+   try {
+    if(email&&password){
+      signInWithEmailAndPassword(auth,email,password).then(()=>{
+        navigation.navigate('Profile')
+      }).catch(error=>Alert.alert(error.message))
+    }
+   } catch (error) {
+    Alert.alert(error.message)
+   }
+  }
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -27,8 +43,8 @@ const Login = ({navigation}) => {
           <Text style={{fontSize:24,fontWeight:'bold',color:'#000',marginTop:15}}>Login</Text>
          </View>
          <View style={styles.bottomPrt}>
-          <TextInput placeholderTextColor={'white'} style={styles.input} placeholder='enter your Email'/>
-          <TextInput placeholderTextColor={'white'} style={styles.input} placeholder='enter your password'/>
+          <TextInput onChangeText={text=>setEmail(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your Email'/>
+          <TextInput onChangeText={text=>setPassword(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your password'/>
           <View style={{alignItems:'center',flexDirection:'row',marginBottom:30}}>
             <Text style={{color:'#c7c7c0',fontSize:14,marginRight:5}}>heaven't registered yet</Text>
             <Pressable onPress={()=>navigation.navigate('Signup')}>
@@ -41,7 +57,7 @@ const Login = ({navigation}) => {
               <Text style={{color:'#56CCF2'}}>click here</Text>
             </Pressable>
           </View>
-          <Pressable onPress={()=>navigation.navigate('Profile')} style={styles.button}>
+          <Pressable onPress={loginUser} style={styles.button}>
             <Text style={{color:'#fff',fontWeight:'bold'}}>Login</Text>
           </Pressable>
          </View>

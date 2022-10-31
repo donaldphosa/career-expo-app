@@ -1,11 +1,41 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import React from 'react'
+import React, { useState } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Dimensions} from 'react-native';
+import { collection, addDoc } from 'firebase/firestore'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth, db } from './firebase';
 
-const Signup = ({navigation}) => {
+const Signup = ({navigation,setUserId}) => {
     const{width,height} = Dimensions.get('window');
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+    const [mobile,setMobile] = useState('')
+    const [username,setUsername] = useState('')
+    const [confrimPassword,setConfrimPassword] = useState('')
+    const userRef = collection(db,'users')
+    const createUser = async()=>{
+     try{
+      if(password && confrimPassword === password && email && mobile && username){
+        await createUserWithEmailAndPassword(auth,email,password).then((user)=>{
+           addDoc(userRef,{
+            name:username,
+            email:email,
+            id:user.user.uid
+          })
+          setUserId(user.user.uid)
+        }).then(()=>{
+          navigation.navigate('Welcome')
+        })
+      }else{
+        Alert.alert('make sure password match and all field are filled')
+      }
+     }catch(error){
+      Alert.alert(error.message)
+     }
+    }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -25,11 +55,11 @@ const Signup = ({navigation}) => {
           <Text style={{fontSize:24,fontWeight:'bold',color:'#000',marginTop:15}}>Sign up</Text>
          </View>
          <View style={[styles.bottomPrt,{height:height*0.65}]}>
-          <TextInput placeholderTextColor={'white'} style={styles.input} placeholder='enter your username'/>
-          <TextInput placeholderTextColor={'white'} style={styles.input} placeholder='enter your mobile number'/>
-          <TextInput placeholderTextColor={'white'} style={styles.input} placeholder='enter your Email'/>
-          <TextInput placeholderTextColor={'white'} style={styles.input} placeholder='enter your password'/>
-          <TextInput placeholderTextColor={'white'} style={styles.input} placeholder='enter your confirm password'/>
+          <TextInput onChangeText={text=>setUsername(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your username'/>
+          <TextInput onChangeText={text=>setMobile(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your mobile number'/>
+          <TextInput onChangeText={text=>setEmail(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your Email'/>
+          <TextInput onChangeText={text=>setPassword(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your password'/>
+          <TextInput onChangeText={text=>setConfrimPassword(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your confirm password'/>
           <View style={{alignItems:'center',flexDirection:'row',marginBottom:30}}>
             <Text style={{color:'#c7c7c0',fontSize:14,marginRight:5}}>Already have an account?</Text>
             <Pressable onPress={()=>navigation.navigate('Login')}>
@@ -37,7 +67,7 @@ const Signup = ({navigation}) => {
             </Pressable>
           </View>
         
-          <Pressable onPress={()=>navigation.navigate('Welcome')} style={styles.button}>
+          <Pressable onPress={createUser} style={styles.button}>
             <Text style={{color:'#fff',fontWeight:'bold'}}>Sign up</Text>
           </Pressable>
          </View>

@@ -13,10 +13,13 @@ import ResumeGuideLines from './ResumeGuideLines';
 import Prospectus from './Prospectus';
 import ForgotPassword from './ForgotPassword'
 import Subjects from './Subjects';
+import { useState } from 'react';
+
 
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+  const [userId,setUserId] = useState('')
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -25,8 +28,20 @@ export default function App() {
         }}
       >
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Signup">
+          {
+            ({navigation})=>{
+              return <Signup navigation={navigation} setUserId={setUserId}/>
+            }
+          }
+        </Stack.Screen>
+        <Stack.Screen name="Welcome" >
+          {
+            ({navigation})=>{
+              return <Welcome userId={userId} navigation={navigation}/>
+            }
+          }
+        </Stack.Screen>
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Institutions" component={Institutions} />
         <Stack.Screen name="Varsity" component={Varsity} />
@@ -36,7 +51,13 @@ export default function App() {
         <Stack.Screen name="ResumeGuideLines" component={ResumeGuideLines} />
         <Stack.Screen name="Prospectus" component={Prospectus} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-        <Stack.Screen name="Subjects" component={Subjects} />
+        <Stack.Screen name="Subjects">
+          {
+            ({navigation})=>{
+              return <Subjects userId={userId} navigation={navigation}/>
+            }
+          }
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

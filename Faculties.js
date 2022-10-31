@@ -3,7 +3,9 @@ import React from 'react'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const Faculties = ({navigation}) => {
+const Faculties = ({navigation,route}) => {
+    const item = route.params
+   
   return (
     <SafeAreaProvider>
         <SafeAreaView>
@@ -14,12 +16,11 @@ const Faculties = ({navigation}) => {
             </View>
 
                 <ScrollView style={{width:'100%',marginTop:40}}>
-                    <Faculty navigation={navigation}/>
-                    <Faculty navigation={navigation}/>
-                    <Faculty navigation={navigation}/>
-                    <Faculty navigation={navigation}/>
-                    <Faculty navigation={navigation}/>
-                    <Faculty navigation={navigation}/>
+                  {
+                    item.item.faculties?.map((f,index)=>{
+                        return <Faculty key={index} navigation={navigation} item={item} {...f}/>
+                    })
+                  }
                     
                 </ScrollView>
             </View>
@@ -30,11 +31,11 @@ const Faculties = ({navigation}) => {
 
 export default Faculties
 
-const Faculty = ({navigation})=>{
+const Faculty = ({navigation,nameOfFaculty,item})=>{
     return(
         <Pressable onPress={()=>navigation.navigate('CourseInfo')} style={styles.fuc}>
-            <Image style={{width:50,height:50,borderRadius:100}} source={require('./assets/universities/UJ.jpg')}/>
-            <Text style={{marginLeft:15,fontSize:16}}>College of Business and Economics</Text>
+            <Image style={{width:50,height:50,borderRadius:100}} source={item.item.image}/>
+            <Text style={{marginLeft:15,fontSize:16}}>{nameOfFaculty}</Text>
         </Pressable>
     )
 }

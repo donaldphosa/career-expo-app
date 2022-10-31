@@ -5,7 +5,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 
-const Varsity = ({navigation}) => {
+const Varsity = ({navigation,route}) => {
+    const item = route.params.item
+    
   return (
     <SafeAreaProvider>
         <SafeAreaView>
@@ -14,17 +16,17 @@ const Varsity = ({navigation}) => {
                 <Ionicons name='search' size={18} color='#000'/>
                 <TextInput placeholderTextColor={'#A0BEF8'} style={{fontSize:20,marginLeft:15}} placeholder='find institution'/>
             </View>
-            <Image style={{width:120,height:120,borderRadius:100,margin:20}} source={require('./assets/universities/UJ.jpg')}/>
+            <Image style={{width:120,height:120,borderRadius:100,margin:20}} source={item.image}/>
             <Pressable onPress={()=>navigation.navigate('Prospectus')} style={styles.button}>
                 <Text style={{color:'#fff',fontWeight:'bold',fontSize:16}}>Download Prospectus</Text>
             </Pressable>
             <View style={styles.details}>
                 <Text style={styles.text}>Contact Details</Text>
-                <Text style={styles.text}>address</Text>
-                <Text style={styles.text}>tellphone</Text>
-                <Text style={styles.text}>websites</Text>
+                <Text style={styles.text}>{item.address}</Text>
+                <Text style={styles.text}>tellphone: {item.tel}</Text>
+                <Text style={styles.text}>websites: {item.website}</Text>
             </View>
-            <Pressable onPress={()=>navigation.navigate('Faculties')} style={styles.button}>
+            <Pressable onPress={()=>navigation.navigate('Faculties',{item})} style={styles.button}>
                 <Text style={{color:'#fff',fontWeight:'bold',fontSize:16}}>Go to faculty/college</Text>
             </Pressable>
             </View>

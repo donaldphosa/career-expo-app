@@ -3,10 +3,12 @@ import React, { useState, useRef } from 'react'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import SelectDropdown from 'react-native-select-dropdown'
 import { AntDesign } from '@expo/vector-icons'
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from './firebase';
 
 
 
-const Subjects = ({navigation}) => {
+const Subjects = ({navigation,userId}) => {
     const subRef = useRef()
     const percentRef = useRef()
     const [metricSubs,setMetricSubs] = useState([])
@@ -42,6 +44,21 @@ const Subjects = ({navigation}) => {
     const percentages = [
         30,40,50,60,70,80,90,100
     ]
+    const subjectsRef = collection(db,'subjects')
+
+    const saveSubjects = async()=>{
+        try{
+            if(metricSubs&&metricSubs.length>=6&&metricSubs.length<=9){
+                addDoc(subjectsRef,{metricSubs,id:userId}).then(()=>{
+                    navigation.navigate('Profile')
+                })
+            }else{
+                Alert.alert('subjects should atleast be 6')
+            }
+        }catch(errer){
+            Alert.alert(errer.message)
+        }
+    }
   return (
     <SafeAreaProvider>
         <SafeAreaView>
@@ -135,7 +152,7 @@ const Subjects = ({navigation}) => {
                 </ScrollView>
             </View>
             <Pressable 
-                onPress={()=>navigation.navigate('Profile')}
+                onPress={saveSubjects}
                 style={[styles.addBtn,{position:'absolute',bottom:20,right:20}]}>
                 <Text style={{color:'#fff',fontWeight:'bold'}}>Submit</Text>
             </Pressable>

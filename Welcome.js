@@ -1,10 +1,45 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import React from 'react'
+import React, { useState } from 'react'
 import {Dimensions} from 'react-native';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from './firebase';
 
-const Welcome = ({navigation}) => {
+const Welcome = ({navigation,userId}) => {
     const{width,height} = Dimensions.get('window');
+    const [fullNames,setFullnames] = useState('')
+    const [dateOdBirth,setDateOfBirth] = useState('')
+    const [lastname,setLastname] = useState('')
+    const [idNumber,setIdNumber] = useState('')
+    const [nationality,setNationality] = useState('')
+    const [gender,setGender] = useState('')
+    const [highestGrade,setHighestGrade] = useState('')
+    const [yearPassed,setYearPassed] = useState('')
+    const userDetailsRef = collection(db,'userDetails')
+
+    const updateMoreDetails = async()=>{
+      try {
+        if(fullNames&&dateOdBirth&&lastname&&idNumber&&nationality&&gender&&highestGrade&&yearPassed&&userDetailsRef){
+          addDoc(userDetailsRef,{
+            fullNames,
+            dateOdBirth,
+            lastname,
+            idNumber,
+            nationality,
+            gender,
+            highestGrade,
+            yearPassed,
+            id:userId
+          }).then(()=>{
+           navigation.navigate('Subjects')
+          })
+        }else{
+          Alert.alert('fill all details')
+        }
+      } catch (error) {
+        Alert.alert(error.message)
+      }
+    }
   return (
     <SafeAreaProvider>
         <SafeAreaView>
@@ -18,55 +53,45 @@ const Welcome = ({navigation}) => {
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>full name(s)</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setFullnames(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>lastname</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setLastname(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Date of Birth</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setDateOfBirth(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>ID number</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setIdNumber(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Gender</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setGender(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Nationality</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setNationality(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <Text style={styles.header}>Educational Information</Text> 
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Heighest Grade</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setHighestGrade(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Year passed</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput onChangeText={text=>setYearPassed(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
-                  <View style={styles.input}>
-                    <Text style={styles.estaric}>*</Text>
-                    <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Heighest Qualification</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
-                  </View>
-                  <View style={styles.input}>
-                    <Text style={styles.estaric}>*</Text>
-                    <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Qualification year passed</Text>
-                    <TextInput placeholderTextColor={'#000'} style={styles.field}/>
-                  </View>
-                  <Pressable onPress={()=>navigation.navigate('Subjects')} style={styles.button}>
+                  <Pressable onPress={updateMoreDetails} style={styles.button}>
                     <Text style={{color:'white',fontWeight:'bold'}}>Next</Text>
                   </Pressable>
                   </ScrollView>

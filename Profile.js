@@ -1,8 +1,26 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from './firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const Profile = ({navigation}) => {
+    const [user,setUser] = useState({})
+    
+    const subsRef = collection(db,'userDetails')
+    useEffect(()=>{
+      const unsubscribe = onAuthStateChanged(auth,(user)=>{
+        const q = query(subsRef,where('id','==',user.uid))
+        const querySnapShot = getDocs(q).then(doc=>{
+          doc.docs.map(doc=>{
+            setUser(doc.data())
+          })
+        })
+      })
+      return unsubscribe
+    },[])
+
   return (
     <SafeAreaProvider>
         <SafeAreaView>
@@ -10,11 +28,11 @@ const Profile = ({navigation}) => {
                 <Text style={{fontSize:24,fontWeight:'bold',marginVertical:20}}>Welcome</Text>
                 <Image style={styles.profileImg} source={require('./assets/profile.jpg')}/>
                 <View style={styles.content}>
-                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>Name: Donald</Text>
-                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>Surname: Phosa</Text>
-                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>ID number: 980208111256633</Text>
-                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>Email: donaldbossd@gmail.com</Text>
-                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>Mobile: 0825364205</Text>
+                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>Name: {user.fullNames}</Text>
+                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>Surname: {user.lastname}</Text>
+                    <Text style={{marginBottom:15,color:'#fff',fontSize:24,fontWeight:'bold'}}>ID number: {user.idNumber}</Text>
+                    
+                    
                     <View style={styles.buttonContainer}>
                         <Pressable onPress={()=>navigation.navigate('Institutions')} style={styles.buttons}>
                             <Text style={{color:'#fff',fontWeight:'bold'}}>Aps</Text>

@@ -13,8 +13,8 @@ const Varsity = ({navigation,route}) => {
         <SafeAreaView>
             <View style={styles.container}>
             <View style={styles.search}>
-                <Ionicons name='search' size={18} color='#000'/>
-                <TextInput placeholderTextColor={'#A0BEF8'} style={{fontSize:20,marginLeft:15}} placeholder='find institution'/>
+                <Ionicons name='search' size={18} color='#1813F3'/>
+                <TextInput placeholderTextColor={'#1813F3'} style={{fontSize:20,marginLeft:15}} placeholder='find institution'/>
             </View>
             <Image style={{width:120,height:120,borderRadius:100,margin:20}} source={item.image}/>
             <Pressable onPress={()=>navigation.navigate('Prospectus')} style={styles.button}>
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius:15,
         padding:10,
-        borderColor:'#A0BEF8',
+        borderColor:'#1813F3',
         flexDirection:'row'
     },
     button:{
         width:'100%',
         padding:5,
-        backgroundColor:'#A0BEF8',
+        backgroundColor:'#1813F3',
         alignItems:'center',
         marginVertical:10,
         borderRadius:5
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     details:{
         width:'100%',
         padding:15,
-        backgroundColor:'#A0BEF8',
+        backgroundColor:'#1813F3',
         marginVertical:10,
         borderRadius:5
     },

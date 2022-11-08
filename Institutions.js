@@ -7,57 +7,66 @@ import universities from './api'
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from './firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import {Dimensions} from 'react-native';
 
 const Institutions = ({navigation}) => {
+  const{width} = Dimensions.get('window');
   const [subjects,setSubjects] = useState('')
   const [aps,setAps] = useState(0)
   const subsRef = collection(db,'subjects')
+  const [searchWord,setSearch] = useState('')
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth,(user)=>{
       const q = query(subsRef,where('id','==',user.uid))
       const querySnapShot = getDocs(q).then(doc=>{
         doc.docs.map(doc=>{
-          setSubjects(doc.data())
+          let aps = 0
+           doc.data().metricSubs.forEach(s=>{
+            if(s.name !== 'Life Orientation'){
+              aps = aps +( Math.floor(s.percent/10))-1
+            }
+          })
+          setAps(aps)
         })
-      }).then(()=>calculteAps())
+      })
     })
     return unsubscribe
   },[])
 
-  const calculteAps = ()=>{
-    let aps=0
-    subjects.metricSubs.forEach(s=>{
-      if(s.name !== 'Life Orientation'){
-        aps = aps +( Math.floor(s.percent/10))-1
-      }
-    })
-    setAps(aps)
+const [AllPossibleUniversiry,setAllPossibleUniversiry] = useState(universities)
+  const search = ()=>{
+    setAllPossibleUniversiry(universities.filter(s=>{
+        return s.name?.toLowerCase().indexOf(searchWord?.toLowerCase())!==-1
+      }))
   }
 
+  const suggestIntitution = async()=>{
+    
+  }
 
   return (
     <SafeAreaProvider>
     <SafeAreaView>
         <View style={styles.container}>
             <View style={styles.search}>
-                <Ionicons name='search' size={18} color='#000'/>
-                <TextInput placeholderTextColor={'#A0BEF8'} style={{fontSize:20,marginLeft:15}} placeholder='find institution'/>
+                <Ionicons name='search' size={18} color='#1813F3'/>
+                <TextInput onChangeText={text=>setSearch(text)} onChange={search} placeholderTextColor={'#1813F3'} style={{fontSize:20,marginLeft:15}} placeholder='find institution'/>
             </View>
             <View style={styles.aps}>
-                <Text style={{fontSize:20,fontWeight:'bold',color:'black'}}>APS Score</Text>
+                <Text style={{fontSize:20,fontWeight:'bold',color:'#1813F3'}}>APS Score</Text>
                 <Text style={{fontSize:20,fontWeight:'bold',color:'orange'}}>{aps}</Text>
             </View>
-            <Text style={{fontSize:20,margin:15,color:'#A0BEF8'}} >Suggested Institutions</Text>
+            <Text style={{fontSize:20,margin:15,color:'#1813F3'}} >Suggested Institutions</Text>
             <ScrollView>
                  <FlatGrid
-                    itemDimension={120}
+                    itemDimension={130}
                     data={
-                      universities
+                      AllPossibleUniversiry
                         }
                     renderItem={({item}) =>{
                       return(
-                        <Pressable onPress={()=>navigation.navigate('Varsity',{item})}>
-                          <Image style={{width:165,height:130}} source={item.image}/>
+                        <Pressable style={{width:width*0.45,height:165,overflow:'hidden',borderRadius:5}} onPress={()=>navigation.navigate('Varsity',{item})}>
+                          <Image resizeMode='cover' style={{width:'100%',height:'100%'}} source={item.image}/>
                         </Pressable>
                       );
                       }}
@@ -84,14 +93,14 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius:15,
         padding:10,
-        borderColor:'#A0BEF8',
+        borderColor:'#1813F3',
         flexDirection:'row'
     },
     aps:{
         alignItems:'center',
         justifyContent:'center',
         borderWidth:3,
-        borderColor:'#000',
+        borderColor:'#1813F3',
         width:130,
         height:100,
         marginTop:20,

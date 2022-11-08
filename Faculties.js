@@ -11,14 +11,14 @@ const Faculties = ({navigation,route}) => {
         <SafeAreaView>
             <View style={styles.container}>
             <View style={styles.search}>
-                <Ionicons name='search' size={18} color='#000'/>
-                <TextInput placeholderTextColor={'#A0BEF8'} placeholder='faculty/college'/>
+                <Ionicons name='search' size={18} color='#1813F3'/>
+                <TextInput placeholderTextColor={'#1813F3'} placeholder='faculty/college'/>
             </View>
 
                 <ScrollView style={{width:'100%',marginTop:40}}>
                   {
                     item.item.faculties?.map((f,index)=>{
-                        return <Faculty key={index} navigation={navigation} item={item} {...f}/>
+                        return <Faculty key={index} navigation={navigation} item={item} f={f}/>
                     })
                   }
                     
@@ -31,11 +31,11 @@ const Faculties = ({navigation,route}) => {
 
 export default Faculties
 
-const Faculty = ({navigation,nameOfFaculty,item})=>{
+const Faculty = ({navigation,f,item})=>{
     return(
-        <Pressable onPress={()=>navigation.navigate('CourseInfo')} style={styles.fuc}>
+        <Pressable onPress={()=>{navigation.navigate('Courses',{f,image:item.item.image,website:item.item.website})}} style={styles.fuc}>
             <Image style={{width:50,height:50,borderRadius:100}} source={item.item.image}/>
-            <Text style={{marginLeft:15,fontSize:16}}>{nameOfFaculty}</Text>
+            <Text style={{marginLeft:15,fontSize:16,color:'#fff'}}>{f.nameOfFaculty}</Text>
         </Pressable>
     )
 }
@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius:15,
         padding:10,
-        borderColor:'#A0BEF8',
+        borderColor:'#1813F3',
         flexDirection:'row'
     },
     fuc:{
         alignItems:'center',
         flexDirection:'row',
-        backgroundColor:'#A0BEF8',
+        backgroundColor:'#1813F3',
         padding:10,
         borderRadius:5,
         width:'100%',

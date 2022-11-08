@@ -982,9 +982,317 @@ const universities = [
           tel:'015 962 8000',
           website:'https://www.univen.ac.za/',
           faculties: [
-            { 
+            {
+                nameOfFaculty:'education ',
+                courses:[
+                    {
+                        name:' bachelor of foundation phase teaching',
+                        requirements:{
+                            subjects:[
+                                {
+                                    subName:'english',
+                                    marks:'50%'
+                                },
+                                
+                            ],
+                            aps:30
+                        }
+                    },
+                    {
+                        name:'bachelor of intermidiate taching',
+                        requirements:{
+                            subjects:[
+                                {
+                                    subName:'english',
+                                    marks:'50%'
+                                },
+                                {
+                                    subName:'mathematics',
+                                    marks:'50%'
+                                },
+                                {
+                                    subName:'life sciences',
+                                    marks:'60%'
+                                },
 
-            }
+                            ],
+                            aps:30
+                        }
+                    },
+                    
+                    
+                    
+                ]
+            },,
+            {
+                nameOfFaculty:'health ',
+                courses:[
+                    {
+                        name:' bachelor of medical sciences',
+                        requirements:{
+                            subjects:[
+                                {
+                                    subName:'english',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'mathematics',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'life sciences',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'physical sciences',
+                                    marks:'60%'
+                                },
+                                
+                            ],
+                            aps:30
+                        }
+                    },
+                    {
+                        name:'bachelor of surgery',
+                        requirements:{
+                            subjects:[
+                                {
+                                    subName:'english',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'mathematics',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'life sciences',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'physical sciences',
+                                    marks:'60%'
+                                },
+
+                            ],
+                            aps:36
+                        }
+                    },
+                    {
+                        name:'bachelor of optometry',
+                        requirements:{
+                            subjects:[
+                                {
+                                    subName:'english',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'mathematics',
+                                    marks:'50%'
+                                },
+                                {
+                                    subName:'life sciences',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'physical sciences',
+                                    marks:'60%'
+                                },
+
+                            ],
+                            aps:33
+                        }
+                    },
+                    
+                    {
+                        name:'bachelor of nursing',
+                        requirements:{
+                            subjects:[
+                                {
+                                    subName:'english',
+                                    marks:'50%'
+                                },
+                                {
+                                    subName:'mathematics',
+                                    marks:'40%'
+                                },
+                                {
+                                    subName:'mathematics literacy',
+                                    marks:'70%'
+                                },
+
+                                {
+                                    subName:'life sciences',
+                                    marks:'60%'
+                                },
+                                {
+                                    subName:'physical sciences',
+                                    marks:'50%'
+                                },
+
+                            ],
+                            aps:30
+                        }
+                    },
+                    
+                    
+                    
+                ]
+            },{
+                    nameOfFaculty:'education ',
+                    courses:[
+                        {
+                            name:' bachelor of foundation phase teaching',
+                            requirements:{
+                                subjects:[
+                                    {
+                                        subName:'english',
+                                        marks:'50%'
+                                    },
+                                    
+                                ],
+                                aps:30
+                            }
+                        },
+                        {
+                            name:'bachelor of intermidiate taching',
+                            requirements:{
+                                subjects:[
+                                    {
+                                        subName:'english',
+                                        marks:'50%'
+                                    },
+                                    {
+                                        subName:'mathematics',
+                                        marks:'50%'
+                                    },
+                                    {
+                                        subName:'life sciences',
+                                        marks:'60%'
+                                    },
+    
+                                ],
+                                aps:30
+                            }
+                        },
+                        
+                        
+                        
+                    ]
+                },,
+                {
+                    nameOfFaculty:'health ',
+                    courses:[
+                        {
+                            name:' bachelor of medical sciences',
+                            requirements:{
+                                subjects:[
+                                    {
+                                        subName:'english',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'mathematics',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'life sciences',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'physical sciences',
+                                        marks:'60%'
+                                    },
+                                    
+                                ],
+                                aps:30
+                            }
+                        },
+                        {
+                            name:'bachelor of surgery',
+                            requirements:{
+                                subjects:[
+                                    {
+                                        subName:'english',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'mathematics',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'life sciences',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'physical sciences',
+                                        marks:'60%'
+                                    },
+    
+                                ],
+                                aps:36
+                            }
+                        },
+                        {
+                            name:'bachelor of optometry',
+                            requirements:{
+                                subjects:[
+                                    {
+                                        subName:'english',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'mathematics',
+                                        marks:'50%'
+                                    },
+                                    {
+                                        subName:'life sciences',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'physical sciences',
+                                        marks:'60%'
+                                    },
+    
+                                ],
+                                aps:33
+                            }
+                        },
+                        
+                        {
+                            name:'bachelor of nursing',
+                            requirements:{
+                                subjects:[
+                                    {
+                                        subName:'english',
+                                        marks:'50%'
+                                    },
+                                    {
+                                        subName:'mathematics',
+                                        marks:'40%'
+                                    },
+                                    {
+                                        subName:'mathematics literacy',
+                                        marks:'70%'
+                                    },
+
+                                    {
+                                        subName:'life sciences',
+                                        marks:'60%'
+                                    },
+                                    {
+                                        subName:'physical sciences',
+                                        marks:'50%'
+                                    },
+    
+                                ],
+                                aps:30
+                            }
+                        },
+                        
+                        
+                        
+                    ]
+                },
           ]
 
         }

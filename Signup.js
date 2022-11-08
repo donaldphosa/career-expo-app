@@ -6,6 +6,7 @@ import {Dimensions} from 'react-native';
 import { collection, addDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from './firebase';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 const Signup = ({navigation,setUserId}) => {
     const{width,height} = Dimensions.get('window');
@@ -15,9 +16,11 @@ const Signup = ({navigation,setUserId}) => {
     const [username,setUsername] = useState('')
     const [confrimPassword,setConfrimPassword] = useState('')
     const userRef = collection(db,'users')
+    const [spin,setSpin] = useState(false)
     const createUser = async()=>{
      try{
-      if(password && confrimPassword === password && email && mobile && username){
+      if(password && confrimPassword === password && email && mobile){
+        setSpin(true)
         await createUserWithEmailAndPassword(auth,email,password).then((user)=>{
            addDoc(userRef,{
             name:username,
@@ -26,12 +29,15 @@ const Signup = ({navigation,setUserId}) => {
           })
           setUserId(user.user.uid)
         }).then(()=>{
+          setSpin(false)
           navigation.navigate('Welcome')
         })
       }else{
+        setSpin(false)
         Alert.alert('make sure password match and all field are filled')
       }
      }catch(error){
+      setSpin(false)
       Alert.alert(error.message)
      }
     }
@@ -39,6 +45,7 @@ const Signup = ({navigation,setUserId}) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView>
+        <Spinner visible={spin}/>
             <ScrollView>
         <View style={[styles.container,{height:height*0.965}]}>
          <View style={[styles.upperPrt,{height:height*0.35}]}>
@@ -55,9 +62,8 @@ const Signup = ({navigation,setUserId}) => {
           <Text style={{fontSize:24,fontWeight:'bold',color:'#000',marginTop:15}}>Sign up</Text>
          </View>
          <View style={[styles.bottomPrt,{height:height*0.65}]}>
-          <TextInput onChangeText={text=>setUsername(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your username'/>
-          <TextInput onChangeText={text=>setMobile(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your mobile number'/>
           <TextInput onChangeText={text=>setEmail(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your Email'/>
+          <TextInput keyboardType='numeric' onChangeText={text=>setMobile(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your mobile number'/>
           <TextInput onChangeText={text=>setPassword(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your password'/>
           <TextInput onChangeText={text=>setConfrimPassword(text)} placeholderTextColor={'white'} style={styles.input} placeholder='enter your confirm password'/>
           <View style={{alignItems:'center',flexDirection:'row',marginBottom:30}}>

@@ -3,53 +3,31 @@ import React from 'react'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlatGrid } from 'react-native-super-grid';
+import {Dimensions} from 'react-native';
+import universities from './api';
 
 
 const HIstory = ({navigation}) => {
-    const history= [
-        {image:require('./assets/universities/Ukzn.jpg'),
-        name: 'University of Kwa-Zulu-Natal',
-        address: '238 Mazisi Kunene Rd, Glenwood, Durban, 4041',
-        tel: '031 260 1111',
-        website:'https://www.ukzn.ac.za/'
-      },
-      {image: require('./assets/universities/UJ.jpg'),
-        name: 'University of Johannesburg',
-        address: 'Physical Cnr Kingsway & University Roads, Auckland Park Johannesburg, 2092',
-        tel: '011 559 4555',
-        website:'https://www.uj.ac.za/'
-      },
-      {image:  require('./assets/universities/UFS.jpg'),
-        name: 'University of Free State',
-        address:'205 Nelson Mandela Dr, Park West, Bloemfontein, 9301',
-        tel:'051 401 9111',
-        website:'https://www.ufs.ac.za/'
-      },
-      {image: require('./assets/universities/Univen.jpg'),
-        name: 'University of Venda',
-        address:'University Rd, Thohoyandou, 0950',
-        tel:'015 962 8000',
-        website:'https://www.univen.ac.za/'
-      },
-    ]
+    
+    const{width,height} = Dimensions.get('window');
   return (
     <SafeAreaProvider>
         <SafeAreaView>
             <View style={styles.container}>
                 <View style={styles.search}>
-                    <Ionicons name='time' size={18} color='#A0BEF8'/>
-                    <Text style={{fontSize:20,fontWeight:'bold',color:'#A0BEF8',justifyContent:'center',marginLeft:10}}>History</Text>
+                    <Ionicons name='time' size={18} color='#1813F3'/>
+                    <Text style={{fontSize:20,fontWeight:'bold',color:'#1813F3',justifyContent:'center',marginLeft:10}}>History</Text>
                 </View>
                 <ScrollView>
                     <FlatGrid
-                    itemDimension={120}
+                    itemDimension={130}
                     data={
-                        history
+                      universities
                     }
                     renderItem={({item}) =>{
                         return(
-                            <Pressable onPress={()=>navigation.navigate('Varsity')}>
-                            <Image style={{width:165,height:165}} source={item.image}/>
+                            <Pressable style={{width:width*0.45,height:165,overflow:'hidden',borderRadius:5}} onPress={()=>navigation.navigate('Varsity')}>
+                            <Image resizeMode='cover' style={{width:'100%',height:'100%'}} source={item.image}/>
                             </Pressable>
                         );
                     }}
@@ -77,7 +55,7 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius:15,
         padding:10,
-        borderColor:'#A0BEF8',
+        borderColor:'#1813F3',
         flexDirection:'row',
         marginBottom:20
     },

@@ -5,6 +5,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { AntDesign } from '@expo/vector-icons'
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from './firebase';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 
 
@@ -14,6 +15,7 @@ const Subjects = ({navigation,userId}) => {
     const [metricSubs,setMetricSubs] = useState([])
     const [tempSub,setTempSub] = useState('')
     const [tempPercent,setTempPercent] = useState(0)
+    const [spin,setSpin] = useState(false)
     const [subjects,setSubjects] = useState([
        ' Economics ',
         'Physical Sciences',
@@ -49,19 +51,24 @@ const Subjects = ({navigation,userId}) => {
     const saveSubjects = async()=>{
         try{
             if(metricSubs&&metricSubs.length>=6&&metricSubs.length<=9){
+                setSpin(true)
                 addDoc(subjectsRef,{metricSubs,id:userId}).then(()=>{
-                    navigation.navigate('Profile')
+                    setSpin(false)
+                    navigation.navigate('Tabs')
                 })
             }else{
+                setSpin(false)
                 Alert.alert('subjects should atleast be 6')
             }
         }catch(errer){
+            setSpin(false)
             Alert.alert(errer.message)
         }
     }
   return (
     <SafeAreaProvider>
         <SafeAreaView>
+            <Spinner visible={spin}/>
         <View style={styles.container}>
             <Text style={styles.header}>Add metric subjects</Text> 
             <View style={styles.dropdownCont}>

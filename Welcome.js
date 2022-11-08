@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import {Dimensions} from 'react-native';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from './firebase';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
+import DatePicker from 'react-native-date-picker'
 
 const Welcome = ({navigation,userId}) => {
     const{width,height} = Dimensions.get('window');
@@ -16,10 +18,12 @@ const Welcome = ({navigation,userId}) => {
     const [highestGrade,setHighestGrade] = useState('')
     const [yearPassed,setYearPassed] = useState('')
     const userDetailsRef = collection(db,'userDetails')
+    const [spin,setSpin] = useState(false)
 
     const updateMoreDetails = async()=>{
       try {
         if(fullNames&&dateOdBirth&&lastname&&idNumber&&nationality&&gender&&highestGrade&&yearPassed&&userDetailsRef){
+          setSpin(true)
           addDoc(userDetailsRef,{
             fullNames,
             dateOdBirth,
@@ -31,18 +35,22 @@ const Welcome = ({navigation,userId}) => {
             yearPassed,
             id:userId
           }).then(()=>{
+            setSpin(false)
            navigation.navigate('Subjects')
           })
         }else{
+          setSpin(false)
           Alert.alert('fill all details')
         }
       } catch (error) {
+        setSpin(false)
         Alert.alert(error.message)
       }
     }
   return (
     <SafeAreaProvider>
         <SafeAreaView>
+          <Spinner visible={spin}/>
         <ScrollView>
             <View style={{width:width*1,height:height*0.965}}>
                 <Image style={{width:'100%',height:'35%'}} source={require('./assets/banner.png')}/>
@@ -63,12 +71,12 @@ const Welcome = ({navigation,userId}) => {
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Date of Birth</Text>
-                    <TextInput onChangeText={text=>setDateOfBirth(text)} placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput placeholder='dd/mm/yyyy' onChangeText={text=>setDateOfBirth(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>ID number</Text>
-                    <TextInput onChangeText={text=>setIdNumber(text)} placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput keyboardType='numeric' onChangeText={text=>setIdNumber(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
@@ -84,12 +92,12 @@ const Welcome = ({navigation,userId}) => {
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Heighest Grade</Text>
-                    <TextInput onChangeText={text=>setHighestGrade(text)} placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput keyboardType='numeric' onChangeText={text=>setHighestGrade(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <View style={styles.input}>
                     <Text style={styles.estaric}>*</Text>
                     <Text style={{fontSize:20,fontWeight:'bold',width:'30%'}}>Year passed</Text>
-                    <TextInput onChangeText={text=>setYearPassed(text)} placeholderTextColor={'#000'} style={styles.field}/>
+                    <TextInput keyboardType='numeric' onChangeText={text=>setYearPassed(text)} placeholderTextColor={'#000'} style={styles.field}/>
                   </View>
                   <Pressable onPress={updateMoreDetails} style={styles.button}>
                     <Text style={{color:'white',fontWeight:'bold'}}>Next</Text>

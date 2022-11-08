@@ -15,7 +15,7 @@ const Login = ({navigation}) => {
    try {
     if(email&&password){
       signInWithEmailAndPassword(auth,email,password).then(()=>{
-        navigation.navigate('Profile')
+        navigation.navigate('Tabs')
       }).catch(error=>Alert.alert(error.message))
     }
    } catch (error) {

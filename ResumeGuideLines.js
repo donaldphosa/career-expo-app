@@ -16,7 +16,7 @@ const ResumeGuideLines = () => {
                 <Text>Resume Guidelines</Text>
             </View>
             <ScrollView>
-                <View style={[styles.guides,{marginBottom:160}]}>
+                <View style={[styles.guides,{marginBottom:190}]}>
                     
 
                    <Text style={styles.ResumeGuideLines}>1. Use the right order</Text>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius:15,
         padding:10,
-        borderColor:'#A0BEF8',
+        borderColor:'#1813F3',
         flexDirection:'row'
     },
     bottom:{
